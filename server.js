@@ -36,4 +36,6 @@ const db = require("./models");
 
 db.sequelize.sync().then(() => {
     //console.log('Drop and Resync Db');
-});
+}).catch(err => {
+    console.log(err.message) });
+

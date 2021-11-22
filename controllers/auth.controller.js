@@ -64,3 +64,9 @@ exports.signup = (req, res) => {
             res.status(500).send({ message: err.message });
         });
 };
+
+
+
+exports.logout = (req, res) => {
+
+};
