@@ -21,7 +21,7 @@ verifyToken = (req, res, next) => {
             });
         }
         req.userId = decoded.id;
-        req.locals.tokens.forEach(element => {
+        req.app.locals.tokens.forEach(element => {
             if(element.token === token && element.status === "off")
             {
                 return res.status(401).send({
