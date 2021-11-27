@@ -38,7 +38,7 @@ exports.signin = (req, res) => {
                 expiresIn: 86400 // 24 hours
             });
             console.log(req.app.locals.tokens);
-            req.app.locals.tokens.push({"token": token, "status": "active"});
+            req.app.locals.tokens.push({ "token": token, "status": "active" });
             console.log(req.app.locals.tokens);
             res.status(200).send({
                 id: user.id,
@@ -67,13 +67,16 @@ exports.signup = (req, res) => {
 
 exports.logout = (req, res) => {
     let token = req.headers["x-access-token"];
+    var status = true;
     req.app.locals.tokens.forEach(element => {
-        if(element.token === token)
-        {
+        if (element.token === token) {
             element.status = "off";
-            res.send({ message: "User was logged off!!!" });
+            status = false;
+            return res.send({ message: "User was logged off!!!" });
+
         }
     });
-    res.send({message: "Already logged off"})
-    console.log(req.app.locals.tokens);    
+    if (status == true)
+        res.send({ message: "Already logged off" })
+    console.log(req.app.locals.tokens);
 };
