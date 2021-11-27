@@ -9,8 +9,6 @@ var jwt = require("jsonwebtoken"); //JWT
 var bcrypt = require("bcryptjs");
 
 
-
-
 //Login de um user
 exports.signin = (req, res) => {
     //Encontrar o nome
@@ -29,7 +27,6 @@ exports.signin = (req, res) => {
                 req.body.password,
                 user.password
             );
-
             if (!passwordIsValid) {
                 return res.status(401).send({
                     accessToken: null,
@@ -49,7 +46,6 @@ exports.signin = (req, res) => {
                 email: user.email,
                 accessToken: token
             });
-
         })
         .catch(err => {
             res.status(500).send({ message: err.message });
@@ -57,7 +53,6 @@ exports.signin = (req, res) => {
 };
 
 exports.signup = (req, res) => {
-    // Save User to Database
     User.create({
         username: req.body.username,
         email: req.body.email,
@@ -70,16 +65,15 @@ exports.signup = (req, res) => {
 };
 
 
-
 exports.logout = (req, res) => {
-    
     let token = req.headers["x-access-token"];
     req.app.locals.tokens.forEach(element => {
         if(element.token === token)
         {
             element.status = "off";
+            res.send({ message: "User was logged off!!!" });
         }
     });
-    res.send({ message: "User was logged out!!!" });
+    res.send({message: "Already logged off"})
     console.log(req.app.locals.tokens);    
 };
