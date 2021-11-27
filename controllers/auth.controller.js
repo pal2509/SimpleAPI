@@ -9,6 +9,8 @@ var jwt = require("jsonwebtoken"); //JWT
 var bcrypt = require("bcryptjs");
 
 
+
+
 //Login de um user
 exports.signin = (req, res) => {
     //Encontrar o nome
@@ -38,7 +40,9 @@ exports.signin = (req, res) => {
             var token = jwt.sign({ id: user.id }, config.secret, {
                 expiresIn: 86400 // 24 hours
             });
-
+            console.log(req.locals.tokens);
+            req.locals.tokens.push({"token": token, "status": "active"});
+            console.log(req.locals.tokens);
             res.status(200).send({
                 id: user.id,
                 username: user.username,
@@ -68,5 +72,14 @@ exports.signup = (req, res) => {
 
 
 exports.logout = (req, res) => {
-
+    
+    let token = req.headers["x-access-token"];
+    req.locals.tokens.forEach(element => {
+        if(element.token === token)
+        {
+            element.status = "off";
+        }
+    });
+    res.send({ message: "User was logged out!!!" });
+    console.log(authJwt.tokens);    
 };

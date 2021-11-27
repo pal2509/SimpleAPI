@@ -8,6 +8,7 @@ var corsOptions = {
     origin: "http://localhost:8081"
 };
 
+app.locals.tokens = [];
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json

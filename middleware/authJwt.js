@@ -3,6 +3,7 @@ const config = require("../config/auth.config.js");
 const db = require("../models");
 const User = db.user;
 
+
 //Função para verificação se o token é válido ou não
 verifyToken = (req, res, next) => {
     let token = req.headers["x-access-token"]; //Token que vem no header
@@ -20,7 +21,20 @@ verifyToken = (req, res, next) => {
             });
         }
         req.userId = decoded.id;
-        next();
+        req.locals.tokens.forEach(element => {
+            if(element.token === token && element.status === "off")
+            {
+                return res.status(401).send({
+                    message: "Token is invalid!"
+                });
+            }
+            if(element.token === token && element.status === "active")
+            {
+                next();
+            }
+                
+        });
+        
     });
 };
 
